@@ -115,8 +115,26 @@ const q = query(collection(db, "reviews"), orderBy("ts", "desc"));
 onSnapshot(q, (snap) => {
   list.innerHTML = "";
   tickerInner.innerHTML = "";
-  snap.forEach((doc) => {
-    const r = doc.data();
+
+  if (snap.empty) {
+    // ha nincs igazi review → teszt adatok
+    const demo = [
+      { name: "Márk", rating: 5, text: "Gyors és profi munka, ajánlom mindenkinek!" },
+      { name: "Kata", rating: 5, text: "Szép dizájn, mobilon is nagyon jól működik." },
+      { name: "Ádám", rating: 4, text: "Rengeteget segített, köszönöm!" },
+      { name: "Lilla", rating: 5, text: "Szuper, sokkal több lead jön be!" },
+      { name: "Norbi", rating: 5, text: "Full elégedett vagyok, modern és gyors oldal." },
+    ];
+    renderReviews(demo);
+  } else {
+    const data = [];
+    snap.forEach((doc) => data.push(doc.data()));
+    renderReviews(data);
+  }
+});
+
+function renderReviews(data) {
+  data.forEach((r) => {
     const card = document.createElement("div");
     card.className = "glass p-5 rounded-2xl";
     card.innerHTML = `
@@ -148,4 +166,5 @@ onSnapshot(q, (snap) => {
     repeat: -1,
     yoyo: true,
   });
-});
+}
+
