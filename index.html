@@ -59,12 +59,12 @@
     .hero-sweep::after{animation-delay:-9s;opacity:.6}
     @keyframes sweep{0%{transform:translateX(-60%) rotate(8deg)}100%{transform:translateX(160%) rotate(8deg)}}
 
-    /* Hero ticker – folyamatos, jobbra */
+    /* Tech ticker */
     @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     .ticker{mask:linear-gradient(90deg,transparent,black 10%,black 90%,transparent)}
     .ticker .marquee{display:flex;gap:2.5rem;width:max-content;animation:marquee 20s linear infinite reverse}
 
-    /* Reviews – csillagválasztó + feed oszlopok */
+    /* Reviews */
     .rating{direction:rtl;display:flex;gap:.25rem}
     .rating input{display:none}
     .rating label{cursor:pointer;font-size:1.1rem;line-height:1;color:#475569;transition:color .15s}
@@ -73,7 +73,7 @@
     #tickerInner > div{display:grid;grid-template-columns:160px 80px 1fr;align-items:center;gap:.75rem}
     #tickerInner > div span:nth-child(2){text-align:center}
 
-    /* Features grid (fallbackos) */
+    /* Features grid */
     .features-grid{display:grid;gap:1.5rem}
     @media (min-width:768px){.features-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (min-width:1024px){.features-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -212,8 +212,8 @@
             <div class="absolute top-4 left-4 text-xs px-3 py-1 rounded-full bg-black/60">Web • Klímaszerelés</div>
           </div>
           <div class="p-6">
-            <h3 class="font-semibold text-lg">Eszes Tiszta Klíma — landing + időpont</h3>
-            <p class="text-slate-300 text-sm mt-2">Erős hero, kontrasztos CTA, csúszó review sáv; városok szerinti szolgáltatás.</p>
+            <h3 class="font-semibold text-lg">Eszes Tiszta Klíma — landing</h3>
+            <p class="text-slate-300 text-sm mt-2">Erős hero, kontrasztos CTA, csúszó review sáv; városok szerinti térkép.</p>
           </div>
         </a>
       </div>
@@ -298,37 +298,23 @@
     </div>
   </section>
 
-  <!-- Kapcsolat (NETLIFY FORMS) -->
+  <!-- Kapcsolat (FORMSPREE) -->
   <section id="kapcsolat" class="py-20 bg-white/5">
     <div class="container mx-auto px-6 text-center">
       <h2 class="text-3xl md:text-4xl font-bold">Dobd át a projektet</h2>
       <p class="mt-4 text-slate-300">Írd le röviden, mire kell oldal. Visszaszólok, és küldök ütemtervet + árat.</p>
 
-      <!-- Siker üzenet (URL-ben submitted=true esetén jelenik meg) -->
-      <div id="successBox" class="hidden mt-6 mx-auto max-w-2xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-200 rounded-xl px-4 py-3">
-        ✅ Köszi! Megkaptam a leveled, hamarosan jelentkezem.
-      </div>
-
       <div class="mt-6 max-w-2xl mx-auto glass p-6 rounded-2xl">
-        <form name="kapcsolat"
-              method="POST"
-              action="/?submitted=true#kapcsolat"
-              accept-charset="UTF-8"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
+        <!-- Formspree endpoint + kötelező email -->
+        <form action="https://formspree.io/f/mdklpvev" method="POST" accept-charset="UTF-8"
               class="grid md:grid-cols-2 gap-4">
-
-          <!-- kötelező rejtett mező -->
-          <input type="hidden" name="form-name" value="kapcsolat">
-          <!-- honeypot -->
-          <p class="hidden">
-            <label>Ne töltsd ki: <input name="bot-field" /></label>
-          </p>
-          <!-- opcionális tárgy -->
-          <input type="hidden" name="subject" value="Új kapcsolatfelvétel - Websy">
+          <!-- spam honeypot -->
+          <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off">
+          <!-- e-mail tárgy -->
+          <input type="hidden" name="_subject" value="Új kapcsolatfelvétel - Websy">
 
           <input name="name" required placeholder="Neved" class="glass rounded-lg px-4 py-3 outline-none">
-          <input name="email" required type="email" placeholder="Email" class="glass rounded-lg px-4 py-3 outline-none" value="berceli45@gmail.com">
+          <input name="email" required type="email" placeholder="Email címed" class="glass rounded-lg px-4 py-3 outline-none">
           <input name="company" placeholder="Cégnév (opcionális)" class="md:col-span-2 glass rounded-lg px-4 py-3">
           <textarea name="message" required placeholder="Mit szeretnél építeni? (pár mondat)" class="md:col-span-2 glass rounded-lg px-4 py-3 h-28"></textarea>
           <button class="btn text-white rounded-lg px-6 py-3 md:col-span-2">Küldés</button>
@@ -355,13 +341,6 @@
 <script>
   lucide.createIcons();
   document.getElementById('year').textContent = new Date().getFullYear();
-
-  // success banner, ha Netlify redirectelte submitted=true-vel
-  const usp = new URLSearchParams(location.search);
-  if (usp.get('submitted') === 'true') {
-    const box = document.getElementById('successBox');
-    if (box) box.classList.remove('hidden');
-  }
 
   // Tilt + GSAP reveals
   document.querySelectorAll('.tilt').forEach(el=>{
