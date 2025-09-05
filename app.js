@@ -8,10 +8,10 @@ import {
 
 // 🔑 a TE Firebase configod
 const firebaseConfig = {
-  apiKey: "AIzaSyA4iZp0Evxv77PlDPG6eRmRuV63eGHtwfU",
+  apiKey: "AIzaSyA4iZQp0Evx77PIDpG6eRmRuV63eGHtwfU",
   authDomain: "websy-velemenyek.firebaseapp.com",
   projectId: "websy-velemenyek",
-  storageBucket: "websy-velemenyek.appspot.com",
+  storageBucket: "websy-velemenyek.firebasestorage.app",
   messagingSenderId: "47514318127",
   appId: "1:47514318127:web:403255ebaa6eb72478ddda"
 };
