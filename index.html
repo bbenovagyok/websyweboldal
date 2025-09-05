@@ -39,7 +39,7 @@
     .btn-sm{padding:.55rem .9rem;border-radius:.7rem;font-weight:600;font-size:.95rem}
     .tilt{transform:perspective(1000px) rotateX(0) rotateY(0);transition:transform .2s}
 
-    /* HERO háttér + végtelen sweep anim (teljes szélesség) */
+    /* HERO sweep */
     .hero-wrap{position:relative;isolation:isolate}
     .hero-wrap::before{
       content:"";position:absolute;inset:-20% -10% auto -10%;height:120vh;z-index:-2;
@@ -59,22 +59,26 @@
     .hero-sweep::after{animation-delay:-9s;opacity:.6}
     @keyframes sweep{0%{transform:translateX(-60%) rotate(8deg)}100%{transform:translateX(160%) rotate(8deg)}}
 
-    /* Hero ticker – folyamatos, jobbra */
+    /* Hero ticker */
     @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     .ticker{mask:linear-gradient(90deg,transparent,black 10%,black 90%,transparent)}
     .ticker .marquee{display:flex;gap:2.5rem;width:max-content;animation:marquee 20s linear infinite reverse}
 
-    /* Reviews – kompakt forma + csillag választó */
+    /* Reviews */
     .rating{direction:rtl;display:flex;gap:.25rem}
     .rating input{display:none}
     .rating label{cursor:pointer;font-size:1.1rem;line-height:1;color:#475569;transition:color .15s}
-    .rating label:hover,
-    .rating label:hover ~ label{color:#fde047}
+    .rating label:hover,.rating label:hover ~ label{color:#fde047}
     .rating input:checked ~ label{color:#fde047}
-
-    /* Animált feed sorok – oszlopos igazítás (név | csillag | szöveg) */
     #tickerInner > div{display:grid;grid-template-columns:160px 80px 1fr;align-items:center;gap:.75rem}
     #tickerInner > div span:nth-child(2){text-align:center}
+
+    /* Features grid (stabil, fallbackos) */
+    .features-grid{display:grid;gap:1.5rem}
+    @media (min-width:768px){.features-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (min-width:1024px){.features-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    .feature-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:1rem;padding:1.25rem}
+    .feature-icon{height:2.5rem;width:2.5rem;border-radius:9999px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;background:rgba(134,95,255,.22)}
   </style>
 </head>
 <body class="overflow-x-hidden">
@@ -112,7 +116,6 @@
         <a href="#kapcsolat" class="glass px-6 py-3 rounded-xl border border-white/10">Kérek ajánlatot</a>
       </div>
 
-      <!-- tech ticker – jobbra, végtelen -->
       <div class="ticker mt-14 overflow-hidden">
         <div class="marquee">
           <div class="flex gap-10 pr-10">
@@ -141,37 +144,26 @@
     <div class="container mx-auto px-6">
       <h2 class="text-3xl md:text-4xl font-bold text-center">Mit kapsz tőlem?</h2>
 
-      <!-- EZ A RÉSZ VOLT ÜRES – most 4 kártya van -->
-      <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="glass p-6 rounded-2xl hover:-translate-y-1 transition tilt">
-          <div class="h-10 w-10 rounded-full bg-brand-500/20 flex items-center justify-center mb-4">
-            <i data-lucide="sparkles" class="text-brand-300"></i>
-          </div>
-          <h3 class="font-semibold mb-2">Professzionális kinézet</h3>
+      <!-- stabil, fallbackos grid -->
+      <div class="features-grid mt-12">
+        <div class="feature-card tilt">
+          <div class="feature-icon"><i data-lucide="sparkles" class="text-brand-300"></i><span class="sr-only">✨</span></div>
+          <h3 class="font-semibold mb-2">✨ Professzionális kinézet</h3>
           <p class="text-slate-300 text-sm">Modern dizájn, ütős tipó és animok, amik eladják a szolgáltatásod.</p>
         </div>
-
-        <div class="glass p-6 rounded-2xl hover:-translate-y-1 transition tilt">
-          <div class="h-10 w-10 rounded-full bg-brand-500/20 flex items-center justify-center mb-4">
-            <i data-lucide="target" class="text-brand-300"></i>
-          </div>
-          <h3 class="font-semibold mb-2">Konverzió-optimalizált UX</h3>
+        <div class="feature-card tilt">
+          <div class="feature-icon"><i data-lucide="target" class="text-brand-300"></i><span class="sr-only">🎯</span></div>
+          <h3 class="font-semibold mb-2">🎯 Konverzió-optimalizált UX</h3>
           <p class="text-slate-300 text-sm">Funnel logika, erős CTA, A/B ötletek — több lead ugyanannyi forgalomból.</p>
         </div>
-
-        <div class="glass p-6 rounded-2xl hover:-translate-y-1 transition tilt">
-          <div class="h-10 w-10 rounded-full bg-brand-500/20 flex items-center justify-center mb-4">
-            <i data-lucide="workflow" class="text-brand-300"></i>
-          </div>
-          <h3 class="font-semibold mb-2">Automatizált ügyfélszerzés</h3>
+        <div class="feature-card tilt">
+          <div class="feature-icon"><i data-lucide="workflow" class="text-brand-300"></i><span class="sr-only">🤖</span></div>
+          <h3 class="font-semibold mb-2">🤖 Automatizált ügyfélszerzés</h3>
           <p class="text-slate-300 text-sm">Űrlap → CRM → e-mail/SMS follow-up. Időpont, ajánlatkérés, review flow bekötve.</p>
         </div>
-
-        <div class="glass p-6 rounded-2xl hover:-translate-y-1 transition tilt">
-          <div class="h-10 w-10 rounded-full bg-brand-500/20 flex items-center justify-center mb-4">
-            <i data-lucide="smartphone" class="text-brand-300"></i>
-          </div>
-          <h3 class="font-semibold mb-2">Teljes reszponzivitás</h3>
+        <div class="feature-card tilt">
+          <div class="feature-icon"><i data-lucide="smartphone" class="text-brand-300"></i><span class="sr-only">📱</span></div>
+          <h3 class="font-semibold mb-2">📱 Teljes reszponzivitás</h3>
           <p class="text-slate-300 text-sm">Mobil-first elrendezés, touch-friendly UX. Tablet/desktop full oké.</p>
         </div>
       </div>
@@ -218,35 +210,28 @@
       <h2 class="text-3xl md:text-4xl font-bold mb-8">Vélemények</h2>
 
       <div class="grid lg:grid-cols-2 gap-6">
-        <!-- Bal: űrlap -->
+        <!-- űrlap -->
         <form id="reviewForm" class="glass p-6 rounded-2xl">
           <div class="grid md:grid-cols-3 gap-4 items-center">
             <input required name="name" placeholder="Neved" class="glass rounded-lg px-4 py-3 outline-none md:col-span-1" />
-
             <div class="glass rounded-lg px-4 py-3 md:col-span-1">
               <div class="flex items-center justify-between">
                 <span class="text-sm opacity-70">Értékelés</span>
                 <div class="rating">
-                  <input type="radio" id="star5" name="rating" value="5" checked>
-                  <label for="star5">★</label>
-                  <input type="radio" id="star4" name="rating" value="4">
-                  <label for="star4">★</label>
-                  <input type="radio" id="star3" name="rating" value="3">
-                  <label for="star3">★</label>
-                  <input type="radio" id="star2" name="rating" value="2">
-                  <label for="star2">★</label>
-                  <input type="radio" id="star1" name="rating" value="1">
-                  <label for="star1">★</label>
+                  <input type="radio" id="star5" name="rating" value="5" checked><label for="star5">★</label>
+                  <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                  <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                  <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                  <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
                 </div>
               </div>
             </div>
-
             <button class="btn btn-sm text-white rounded-lg md:col-span-1 justify-self-start">Vélemény beküldése</button>
             <textarea required name="text" placeholder="Mondd el röviden, milyen volt velem dolgozni…" class="glass rounded-lg px-4 py-3 h-28 md:col-span-3 mt-2"></textarea>
           </div>
         </form>
 
-        <!-- Jobb: élő feed -->
+        <!-- anim feed -->
         <div class="glass rounded-2xl p-6 flex flex-col">
           <h3 class="font-semibold mb-4">Friss visszajelzések (auto-scroll)</h3>
           <div id="tickerWrap" class="overflow-hidden grow relative min-h-[12rem]">
@@ -255,7 +240,6 @@
         </div>
       </div>
 
-      <!-- Rejtett lista a JS-hez -->
       <div id="reviewsList" class="hidden"></div>
     </div>
   </section>
@@ -265,38 +249,36 @@
     <div class="container mx-auto px-6">
       <h2 class="text-3xl md:text-4xl font-bold text-center">Csomagok</h2>
 
-      <div class="mt-10 grid md:grid-cols-2 gap-6">
-        <!-- Starter -->
-        <div class="glass p-7 rounded-2xl flex flex-col h-full">
-          <h3 class="text-xl font-semibold">Starter Landing</h3>
-          <p class="text-slate-300 text-sm mt-2">1 oldal, hero + szekciók, CTA, analitika</p>
-          <div class="text-3xl font-extrabold mt-6">255 000 Ft</div>
-          <ul class="mt-6 space-y-2 text-sm">
-            <li>• Reszponzív design</li>
-            <li>• Alap SEO</li>
-            <li>• 1 kör módosítás</li>
-          </ul>
-          <a href="#kapcsolat" class="btn btn-sm text-white rounded-xl mt-6 self-start">Mehet</a>
-        </div>
-
-        <!-- Business -->
-        <div class="glass p-7 rounded-2xl border border-brand-400/40 flex flex-col h-full">
-          <div class="text-xs mb-2 text-brand-200">LEGNÉPSZERŰBB</div>
-          <h3 class="text-xl font-semibold">Business Site</h3>
-          <p class="text-slate-300 text-sm mt-2">3–5 oldal, blog, űrlap, gyors hosting</p>
-          <div class="text-3xl font-extrabold mt-6">— egyedi ajánlat</div>
-          <ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-            <li>• Animációk + micro-UX</li>
-            <li>• SEO technikai checklist</li>
-            <li>• 2 kör módosítás</li>
-            <li>• Egyedi kérések</li>
-            <li>• Egyedi animáció</li>
-            <li>• Interaktív térkép</li>
-            <li>• Időpontfoglalás</li>
-          </ul>
-          <a href="#kapcsolat" class="btn btn-sm text-white rounded-xl mt-6 self-start">Kérek ajánlatot</a>
-        </div>
+    <div class="mt-10 grid md:grid-cols-2 gap-6">
+      <div class="glass p-7 rounded-2xl flex flex-col h-full">
+        <h3 class="text-xl font-semibold">Starter Landing</h3>
+        <p class="text-slate-300 text-sm mt-2">1 oldal, hero + szekciók, CTA, analitika</p>
+        <div class="text-3xl font-extrabold mt-6">255 000 Ft</div>
+        <ul class="mt-6 space-y-2 text-sm">
+          <li>• Reszponzív design</li>
+          <li>• Alap SEO</li>
+          <li>• 1 kör módosítás</li>
+        </ul>
+        <a href="#kapcsolat" class="btn btn-sm text-white rounded-xl mt-6 self-start">Mehet</a>
       </div>
+
+      <div class="glass p-7 rounded-2xl border border-brand-400/40 flex flex-col h-full">
+        <div class="text-xs mb-2 text-brand-200">LEGNÉPSZERŰBB</div>
+        <h3 class="text-xl font-semibold">Business Site</h3>
+        <p class="text-slate-300 text-sm mt-2">3–5 oldal, blog, űrlap, gyors hosting</p>
+        <div class="text-3xl font-extrabold mt-6">— egyedi ajánlat</div>
+        <ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+          <li>• Animációk + micro-UX</li>
+          <li>• SEO technikai checklist</li>
+          <li>• 2 kör módosítás</li>
+          <li>• Egyedi kérések</li>
+          <li>• Egyedi animáció</li>
+          <li>• Interaktív térkép</li>
+          <li>• Időpontfoglalás</li>
+        </ul>
+        <a href="#kapcsolat" class="btn btn-sm text-white rounded-xl mt-6 self-start">Kérek ajánlatot</a>
+      </div>
+    </div>
     </div>
   </section>
 
@@ -348,14 +330,14 @@
 
   gsap.registerPlugin(ScrollTrigger);
   gsap.utils.toArray('section').forEach((sec)=>{
-    gsap.from(sec.querySelectorAll('h2, h3, p, .glass, article, form'),{
+    gsap.from(sec.querySelectorAll('h2, h3, p, .glass, article, form, .feature-card'),{
       opacity:0,y:20,stagger:0.06,duration:.7,ease:'power2.out',
       scrollTrigger:{trigger:sec,start:'top 80%'}
     });
   });
 </script>
 
-<!-- Review app (külön fájlban marad) -->
+<!-- Firebase app (külön fájl) -->
 <script type="module" src="app.js"></script>
 </body>
 </html>
