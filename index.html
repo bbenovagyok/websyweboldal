@@ -177,7 +177,6 @@
         <a href="#kapcsolat" class="text-brand-200 hover:underline">Szeretnék hasonlót</a>
       </div>
 
-      <!-- három kártya -->
       <div class="mt-10 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
         <!-- Ácsmester -->
         <article class="glass rounded-2xl overflow-hidden group">
@@ -203,7 +202,7 @@
           </div>
         </article>
 
-        <!-- ÚJ: Eszes Tiszta Klíma (kattintható, új lapon) -->
+        <!-- Eszes Tiszta Klíma -->
         <a href="https://eszestisztaklima.hu/" target="_blank" rel="noopener"
            class="glass rounded-2xl overflow-hidden group block">
           <div class="relative overflow-hidden">
@@ -213,8 +212,8 @@
             <div class="absolute top-4 left-4 text-xs px-3 py-1 rounded-full bg-black/60">Web • Klímaszerelés</div>
           </div>
           <div class="p-6">
-            <h3 class="font-semibold text-lg">Eszes Tiszta Klíma — landing</h3>
-            <p class="text-slate-300 text-sm mt-2">Erős hero, kontrasztos CTA, csúszó review sáv; városok szerinti térkép.</p>
+            <h3 class="font-semibold text-lg">Eszes Tiszta Klíma — landing + időpont</h3>
+            <p class="text-slate-300 text-sm mt-2">Erős hero, kontrasztos CTA, csúszó review sáv; városok szerinti szolgáltatás.</p>
           </div>
         </a>
       </div>
@@ -299,13 +298,35 @@
     </div>
   </section>
 
-  <!-- Kapcsolat -->
+  <!-- Kapcsolat (NETLIFY FORMS) -->
   <section id="kapcsolat" class="py-20 bg-white/5">
     <div class="container mx-auto px-6 text-center">
       <h2 class="text-3xl md:text-4xl font-bold">Dobd át a projektet</h2>
       <p class="mt-4 text-slate-300">Írd le röviden, mire kell oldal. Visszaszólok, és küldök ütemtervet + árat.</p>
-      <div class="mt-8 max-w-2xl mx-auto glass p-6 rounded-2xl">
-        <form action="https://formspree.io/f/mwkgrrvy" method="POST" class="grid md:grid-cols-2 gap-4">
+
+      <!-- Siker üzenet (URL-ben submitted=true esetén jelenik meg) -->
+      <div id="successBox" class="hidden mt-6 mx-auto max-w-2xl bg-emerald-600/15 border border-emerald-500/30 text-emerald-200 rounded-xl px-4 py-3">
+        ✅ Köszi! Megkaptam a leveled, hamarosan jelentkezem.
+      </div>
+
+      <div class="mt-6 max-w-2xl mx-auto glass p-6 rounded-2xl">
+        <form name="kapcsolat"
+              method="POST"
+              action="/?submitted=true#kapcsolat"
+              accept-charset="UTF-8"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              class="grid md:grid-cols-2 gap-4">
+
+          <!-- kötelező rejtett mező -->
+          <input type="hidden" name="form-name" value="kapcsolat">
+          <!-- honeypot -->
+          <p class="hidden">
+            <label>Ne töltsd ki: <input name="bot-field" /></label>
+          </p>
+          <!-- opcionális tárgy -->
+          <input type="hidden" name="subject" value="Új kapcsolatfelvétel - Websy">
+
           <input name="name" required placeholder="Neved" class="glass rounded-lg px-4 py-3 outline-none">
           <input name="email" required type="email" placeholder="Email" class="glass rounded-lg px-4 py-3 outline-none" value="berceli45@gmail.com">
           <input name="company" placeholder="Cégnév (opcionális)" class="md:col-span-2 glass rounded-lg px-4 py-3">
@@ -313,6 +334,7 @@
           <button class="btn text-white rounded-lg px-6 py-3 md:col-span-2">Küldés</button>
         </form>
       </div>
+
       <p class="mt-6 text-sm text-slate-300">
         Vagy írj direktben:
         <a href="mailto:berceli45@gmail.com" class="underline">berceli45@gmail.com</a>
@@ -334,6 +356,13 @@
   lucide.createIcons();
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // success banner, ha Netlify redirectelte submitted=true-vel
+  const usp = new URLSearchParams(location.search);
+  if (usp.get('submitted') === 'true') {
+    const box = document.getElementById('successBox');
+    if (box) box.classList.remove('hidden');
+  }
+
   // Tilt + GSAP reveals
   document.querySelectorAll('.tilt').forEach(el=>{
     el.addEventListener('mousemove',e=>{
@@ -354,7 +383,7 @@
   });
 </script>
 
-<!-- Firebase app (külön fájl) -->
+<!-- Firebase review app -->
 <script type="module" src="app.js"></script>
 </body>
 </html>
