@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="hu" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weboldal Gyártás — Berceli Bence | Full-stack, AI & Animációk</title>
+
+  <meta name="description" content="Modern, animált, AI-támogatott weboldalak 2025-re. Portfólió, élő vélemények, gyors betöltés, reszponzív design." />
+  <meta property="og:title" content="Weboldal Gyártás — Berceli Bence" />
+  <meta property="og:description" content="Portfólió + élő vélemények + brutál animációk. Nézd meg a referencia munkákat és kérj ajánlatot." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#111827" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { inter: ['Inter','ui-sans-serif','system-ui'] },
+          colors: { brand: { 50:'#f4f1ff',100:'#ebe5ff',200:'#d7cdff',300:'#b6a2ff',400:'#9b7dff',500:'#865fff',600:'#6f43fb',700:'#5a33d4',800:'#492aa9',900:'#3b2586'} }
+        }
+      }
+    }
+  </script>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+
+  <style>
+    html,body{background:#0b0f1a;color:#e5e7eb;font-family:Inter,system-ui;}
+    .glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(12px)}
+    .grad-text{background:linear-gradient(90deg,#a855f7,#6366f1,#22d3ee);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .btn{background:linear-gradient(90deg,#8b5cf6,#6366f1);box-shadow:0 10px 25px rgba(99,102,241,.35)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(99,102,241,.45)}
+  </style>
+</head>
+<body class="overflow-x-hidden">
+
+<!-- Header -->
+<header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-6xl glass rounded-full">
+  <div class="px-5 py-3 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3 font-bold">
+      <span class="text-2xl">⚡</span><span class="grad-text text-xl">Websy</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm">
+      <a href="#munkak" class="hover:text-brand-200">Munkák</a>
+      <a href="#szolg" class="hover:text-brand-200">Szolgáltatások</a>
+      <a href="#arak" class="hover:text-brand-200">Árak</a>
+      <a href="#velemenyek" class="hover:text-brand-200">Vélemények</a>
+      <a href="#kapcsolat" class="hover:text-brand-200">Kapcsolat</a>
+    </nav>
+    <a href="#kapcsolat" class="hidden sm:inline-flex btn text-white text-sm font-semibold px-5 py-2 rounded-full">Kérek ajánlatot</a>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="relative pt-40 md:pt-48 pb-20">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+        Modern, gyors és <span class="grad-text">animált weboldalak</span> — 2025 módra
+      </h1>
+      <p class="mt-6 text-slate-300 max-w-2xl mx-auto">
+        Én csinálom a látványt, a sebességet meg az AI-t. Landing page, vállalkozói site, online foglalás, chatbot — ami kell, megoldjuk.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="szolg" class="py-20 bg-white/5">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-center">Mit kapsz tőlem?</h2>
+      <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="font-semibold mb-2">Professzionális kinézet</h3>
+          <p class="text-slate-300 text-sm">Modern dizájn, ütős tipográfia és animációk, amik eladják a szolgáltatásod.</p>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="font-semibold mb-2">SEO és gyorsaság</h3>
+          <p class="text-slate-300 text-sm">Az oldal nem csak szép, hanem gyors is és Google-barát.</p>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="font-semibold mb-2">AI integráció</h3>
+          <p class="text-slate-300 text-sm">Chatbot, automatizált ajánlatkérés, Google review gyűjtés.</p>
+        </div>
+        <div class="glass p-6 rounded-2xl">
+          <h3 class="font-semibold mb-2">Teljes reszponzivitás</h3>
+          <p class="text-slate-300 text-sm">Minden eszközön jól mutat: mobilon, tableten és asztali gépen is.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="munkak" class="py-20">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl md:text-4xl font-bold">Friss munkák</h2>
+      <div class="mt-10 grid md:grid-cols-2 gap-6">
+        <!-- Card 1 -->
+        <article class="glass rounded-2xl overflow-hidden group">
+          <img src="https://i.postimg.cc/zfV9nCzg/image.png" alt="Ácsmester" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="font-semibold text-lg">Ácsmester — hero redesign</h3>
+            <p class="text-slate-300 text-sm mt-2">Masszív tipográfia, erős CTA, sötét overlay a kép felett.</p>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="glass rounded-2xl overflow-hidden group">
+          <img src="https://i.postimg.cc/MGMFcz50/image.png" alt="Pivo Bar" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="font-semibold text-lg">PIVO Bar — foglalós hero</h3>
+            <p class="text-slate-300 text-sm mt-2">Nápolyi vibe, erős CTA gomb, sötétített háttér a jobb olvashatósághoz.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="kapcsolat" class="py-20 bg-white/5">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold">Dobd át a projektet</h2>
+      <p class="mt-4 text-slate-300">Írd le röviden, mire kell oldal. Visszaszólok, és küldök ütemtervet + árat.</p>
+      <div class="mt-8 max-w-2xl mx-auto glass p-6 rounded-2xl">
+        <form action="https://formspree.io/f/mwkgrrvy" method="POST" class="grid md:grid-cols-2 gap-4">
+          <input name="name" required placeholder="Neved" class="glass rounded-lg px-4 py-3 outline-none">
+          <input name="email" required type="email" placeholder="Email" class="glass rounded-lg px-4 py-3 outline-none" value="berceli45@gmail.com">
+          <textarea name="message" required placeholder="Mit szeretnél építeni?" class="md:col-span-2 glass rounded-lg px-4 py-3 h-28"></textarea>
+          <button class="btn text-white rounded-lg px-6 py-3 md:col-span-2">Küldés</button>
+        </form>
+      </div>
+      <p class="mt-6 text-sm text-slate-400">Vagy írj direktben: <a href="mailto:berceli45@gmail.com" class="underline">berceli45@gmail.com</a></p>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="py-10 text-center text-slate-400">
+  <p>© <span id="year"></span> Berceli Bence — Weboldal gyártás.</p>
+</footer>
+
+<script>
+  lucide.createIcons();
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
