@@ -29,10 +29,19 @@ const form = document.getElementById('reviewForm');
 const list = document.getElementById('reviewsList');
 const tickerInner = document.getElementById('tickerInner');
 
+// Fallback DEMÓ vélemények (max 5)
+const DEMO = [
+  { name: "Márk",  rating: 5, text: "Gyors és profi munka, ajánlom mindenkinek!" },
+  { name: "Kata",  rating: 5, text: "Szép dizájn, mobilon is nagyon jól működik." },
+  { name: "Ádám",  rating: 4, text: "Rengeteget segített, köszönöm!" },
+  { name: "Lilla", rating: 5, text: "Sokkal több lead jön be most." },
+  { name: "Norbi", rating: 5, text: "Modern és gyors oldal, full elégedett vagyok." },
+];
+
 // escape
 const esc = s => (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
 
-// mini konfetti (marad)
+// mini konfetti
 function burstFrom(el){
   const n=14, box=el.getBoundingClientRect();
   for(let i=0;i<n;i++){
@@ -66,80 +75,92 @@ form.addEventListener('submit', async (e)=>{
   form.reset();
 });
 
-// végtelen ticker anim
+// ----------- Végtelen ticker kezelése -----------
 let tickerTween;
+
+// render helper -> felépíti a listákat és indítja az animot
+function renderRows(rows){
+  // törlés
+  list.innerHTML = '';
+  tickerInner.innerHTML = '';
+
+  rows.forEach(r=>{
+    const safeName = esc(r.name || 'Név nélkül');
+    const safeText = esc(r.text || '');
+    const rating = Math.max(1, Math.min(5, r.rating|0 || 5));
+    const stars = '★'.repeat(rating) + '☆'.repeat(5-rating);
+
+    // nagy kártya (ha később vissza akarod kapcsolni)
+    const card = document.createElement('div');
+    card.className = 'glass p-5 rounded-2xl';
+    card.innerHTML = `
+      <div class="flex items-center justify-between">
+        <div class="font-semibold">${safeName}</div>
+        <div class="text-yellow-400 text-sm">${stars}</div>
+      </div>
+      <p class="text-slate-300 text-sm mt-3">${safeText}</p>`;
+    list.appendChild(card);
+
+    // ticker sor (grid: név | csillag | szöveg)
+    const row = document.createElement('div');
+    row.className = 'glass px-4 py-3 rounded-xl';
+    row.innerHTML = `
+      <span class="text-sm">${safeName}</span>
+      <span class="text-xs text-yellow-400 text-center">${'★'.repeat(rating)}</span>
+      <span class="text-slate-300 text-sm">${safeText}</span>`;
+    tickerInner.appendChild(row);
+  });
+
+  runTicker(); // indul az anim
+}
+
 function runTicker(){
   if(!tickerInner) return;
   if(tickerTween){ tickerTween.kill(); tickerTween = null; }
 
-  // Ha nincs elég elem, ne animáljon
-  const rows = tickerInner.children.length;
-  if(rows === 0) return;
+  const childCount = tickerInner.children.length;
+  if(childCount === 0) return;
 
-  // Duplázás a nahtalan loophoz
-  // (előbb töröljük a korábbi duplázást)
-  const half = Math.floor(rows/2);
-  // ha már duplázott (páros és első fele == második fele), ne ismét duplázd
-  if(rows > 1){
-    // oké
-  }
-  // Egyszerű módszer: mindig duplázunk frissen felépített listán
-  // (a felépítést mi végezzük az onSnapshotban, ott mindig tiszta a lista)
-
-  const kids = Array.from(tickerInner.children);
-  kids.forEach(k => tickerInner.appendChild(k.cloneNode(true)));
+  // duplázás a nahtalan loophoz
+  const clones = Array.from(tickerInner.children).map(n => n.cloneNode(true));
+  clones.forEach(cl => tickerInner.appendChild(cl));
 
   const wrapH = tickerInner.parentElement.getBoundingClientRect().height || 200;
-  const scrollH = tickerInner.scrollHeight / 2; // csak az eredeti lista magassága
-  const dist = Math.max(0, scrollH);
+  const dist = tickerInner.scrollHeight / 2; // az „eredeti” blokk magassága
+
+  // ha nem elég magas a tartalom, anim nélkül is oké – de látszódjon
+  if(dist <= wrapH * 0.6){
+    gsap.set(tickerInner, { y: 0 });
+    return;
+  }
 
   gsap.set(tickerInner,{y:0});
   tickerTween = gsap.to(tickerInner,{
     y: -dist,
     duration: Math.max(15, dist/40),
-    ease: "none",
+    ease: 'none',
     repeat: -1,
     onRepeat: () => gsap.set(tickerInner,{y:0})
   });
 }
 
-// live lista
+// ----------- Firestore live + fallback -----------
 const q = query(collection(db,'reviews'), orderBy('ts','desc'));
 onSnapshot(q,(snap)=>{
-  list.innerHTML=''; 
-  tickerInner.innerHTML='';
+  const rows = [];
+  snap.forEach(doc => rows.push(doc.data()));
 
-  snap.forEach(doc=>{
-    const r = doc.data();
+  if(rows.length === 0){
+    // nincs adat → demó
+    renderRows(DEMO);
+  } else {
+    renderRows(rows);
+  }
 
-    // nagy kártya (ha kéne)
-    const card = document.createElement('div');
-    card.className = 'glass p-5 rounded-2xl';
-    card.innerHTML = `
-      <div class="flex items-center justify-between">
-        <div class="font-semibold">${esc(r.name||'Név nélkül')}</div>
-        <div class="text-yellow-400 text-sm">${'★'.repeat(r.rating||5)}${'☆'.repeat(Math.max(0,5-(r.rating||5)))}</div>
-      </div>
-      <p class="text-slate-300 text-sm mt-3">${esc(r.text||'')}</p>`;
-    list.appendChild(card);
-
-    // TICKER sor (mobilbarát grid)
-    const row = document.createElement('div');
-    row.className = 'glass px-4 py-3 rounded-xl';
-    row.innerHTML = `
-      <span class="text-sm">${esc(r.name||'')}</span>
-      <span class="text-xs text-yellow-400 text-center">${'★'.repeat(r.rating||5)}</span>
-      <span class="text-slate-300 text-sm">${esc(r.text||'')}</span>`;
-    tickerInner.appendChild(row);
-  });
-
-  // anim indítás / újraindítás
-  runTicker();
-
-  // resizen újraszámol
-  let resizeTO;
+  // resizen újrakalkulál
+  let to;
   window.addEventListener('resize', ()=>{
-    clearTimeout(resizeTO);
-    resizeTO = setTimeout(runTicker, 200);
+    clearTimeout(to);
+    to = setTimeout(runTicker, 200);
   }, { once: true });
 });
