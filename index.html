@@ -53,6 +53,7 @@
     .shine:hover:after{transform:translateX(120%)}
     .ticker{mask:linear-gradient(90deg,transparent,black 10%,black 90%,transparent)}
     .tilt{transform:perspective(1000px) rotateX(0) rotateY(0);transition:transform .2s}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   </style>
 </head>
 <body class="overflow-x-hidden">
@@ -75,7 +76,7 @@
 </header>
 
 <main>
-  <!-- Hero (vissza az anim) -->
+  <!-- Hero -->
   <section class="relative hero-bg pt-40 md:pt-48 pb-20">
     <div class="container mx-auto px-6 text-center">
       <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
@@ -89,7 +90,6 @@
         <a href="#kapcsolat" class="glass px-6 py-3 rounded-xl border border-white/10">Kérek ajánlatot</a>
       </div>
 
-      <!-- tech ticker -->
       <div class="ticker mt-14 overflow-hidden">
         <div class="flex gap-10 animate-[marquee_20s_linear_infinite]">
           <span class="opacity-70">Tailwind</span>
@@ -100,7 +100,6 @@
           <span class="opacity-70">SEO</span>
         </div>
       </div>
-      <style>@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}</style>
     </div>
   </section>
 
@@ -116,8 +115,6 @@
           <h3 class="font-semibold mb-2">Professzionális kinézet</h3>
           <p class="text-slate-300 text-sm">Modern dizájn, ütős tipó és animok, amik eladják a szolgáltatásod.</p>
         </div>
-
-        <!-- ÚJ 1: Konverzió fókusz -->
         <div class="glass p-6 rounded-2xl hover:-translate-y-1 transition tilt">
           <div class="h-10 w-10 rounded-full bg-brand-500/20 flex items-center justify-center mb-4">
             <i data-lucide="target" class="text-brand-300"></i>
@@ -125,8 +122,6 @@
           <h3 class="font-semibold mb-2">Konverzió-optimalizált UX</h3>
           <p class="text-slate-300 text-sm">Funnel logika, erős CTA, A/B ötletek — több lead ugyanannyi forgalomból.</p>
         </div>
-
-        <!-- ÚJ 2: Automatizált ügyfélszerzés -->
         <div class="glass p-6 rounded-2xl hover:-translate-y-1 transition tilt">
           <div class="h-10 w-10 rounded-full bg-brand-500/20 flex items-center justify-center mb-4">
             <i data-lucide="workflow" class="text-brand-300"></i>
@@ -134,7 +129,6 @@
           <h3 class="font-semibold mb-2">Automatizált ügyfélszerzés</h3>
           <p class="text-slate-300 text-sm">Űrlap → CRM → e-mail/SMS follow-up. Időpont, ajánlatkérés, review flow bekötve.</p>
         </div>
-
         <div class="glass p-6 rounded-2xl hover:-translate-y-1 transition tilt">
           <div class="h-10 w-10 rounded-full bg-brand-500/20 flex items-center justify-center mb-4">
             <i data-lucide="smartphone" class="text-brand-300"></i>
@@ -185,7 +179,7 @@
     <div class="container mx-auto px-6">
       <div class="flex items-end justify-between gap-6 flex-wrap">
         <h2 class="text-3xl md:text-4xl font-bold">Vélemények</h2>
-        <p class="text-slate-300 max-w-xl">Dobd be a véleményed — azonnal megjelenik. Csillagokkal értékelsz, élő lista + auto-scroll ticker.</p>
+        <p class="text-slate-300 max-w-xl">Dobd be a véleményed — azonnal megjelenik. Csillaggal értékelsz, élő lista + auto-scroll ticker.</p>
       </div>
 
       <!-- Add review form -->
@@ -212,7 +206,7 @@
     </div>
   </section>
 
-  <!-- Pricing (marad) -->
+  <!-- Pricing -->
   <section id="arak" class="py-20">
     <div class="container mx-auto px-6">
       <h2 class="text-3xl md:text-4xl font-bold text-center">Csomagok</h2>
@@ -279,7 +273,7 @@
   <p>© <span id="year"></span> Berceli Bence — Weboldal gyártás.</p>
 </footer>
 
-<!-- App scripts -->
+<!-- Alap JS (ikonok, animok) -->
 <script>
   lucide.createIcons();
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -302,107 +296,9 @@
       scrollTrigger:{trigger:sec,start:'top 80%'}
     });
   });
-
-  // mini confetti
-  function burst(x,y){
-    const n=14;
-    for(let i=0;i<n;i++){
-      const p=document.createElement('span');
-      p.style.position='fixed';
-      p.style.width=p.style.height='6px';
-      p.style.left=x+'px'; p.style.top=y+'px';
-      p.style.background=['#a855f7','#6366f1','#22d3ee'][i%3];
-      p.style.borderRadius='2px'; p.style.pointerEvents='none';
-      document.body.appendChild(p);
-      const dx=(Math.random()-0.5)*240, dy=(Math.random()-0.6)*240;
-      p.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${dx}px,${dy}px)`,opacity:0}],{duration:700+Math.random()*300,easing:'cubic-bezier(.2,.7,.3,1)'}).finished.then(()=>p.remove());
-    }
-  }
 </script>
 
-<!-- Firebase (MODULE) -->
-<script type="module">
-  // Firebase SDK (v10+)
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-
-  // TODO: ide tedd a SAJÁT configod
-  const firebaseConfig = {
-    apiKey: "PASTE_ME",
-    authDomain: "PASTE_ME.firebaseapp.com",
-    projectId: "PASTE_ME",
-    storageBucket: "PASTE_ME.appspot.com",
-    messagingSenderId: "PASTE_ME",
-    appId: "PASTE_ME"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // anonim bejelentkezés a write-hoz (ha a szabályok auth-ot kérnek)
-  try { await signInAnonymously(auth); } catch(e){ console.warn('Anon auth hiba:', e.message); }
-
-  const form = document.getElementById('reviewForm');
-  const list = document.getElementById('reviewsList');
-  const tickerInner = document.getElementById('tickerInner');
-
-  function escapeHtml(s){return (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m]))}
-
-  // submit → Firestore
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const fd = new FormData(form);
-    const name = (fd.get('name')+'').trim();
-    const text = (fd.get('text')+'').trim();
-    const rating = parseInt(fd.get('rating'),10)||5;
-    if(!name || !text) return;
-
-    const center = form.getBoundingClientRect();
-    burst(center.left+center.width/2, center.top+center.height/2);
-
-    await addDoc(collection(db,'reviews'),{
-      name, text, rating, ts: serverTimestamp()
-    });
-    form.reset();
-  });
-
-  // live list
-  const q = query(collection(db,'reviews'), orderBy('ts','desc'));
-  onSnapshot(q,(snap)=>{
-    list.innerHTML=''; tickerInner.innerHTML='';
-    snap.forEach(doc=>{
-      const r = doc.data();
-      const card = document.createElement('div');
-      card.className = 'glass p-5 rounded-2xl';
-      card.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div class="font-semibold">${escapeHtml(r.name||'Név nélkül')}</div>
-          <div class="text-yellow-400 text-sm">${'★'.repeat(r.rating||5)}${'☆'.repeat(Math.max(0,5-(r.rating||5)))}</div>
-        </div>
-        <p class="text-slate-300 text-sm mt-3">${escapeHtml(r.text||'')}</p>`;
-      list.appendChild(card);
-
-      const row = document.createElement('div');
-      row.className = 'flex items-center justify-between gap-3 glass px-4 py-3 rounded-xl';
-      row.innerHTML = `<span class="text-sm">${escapeHtml(r.name||'')}</span>
-                       <span class="text-xs text-yellow-400">${'★'.repeat(r.rating||5)}</span>
-                       <span class="text-slate-300 text-sm truncate">${escapeHtml(r.text||'')}</span>`;
-      tickerInner.appendChild(row);
-    });
-
-    // ticker anim
-    const h = tickerInner.scrollHeight;
-    gsap.set(tickerInner,{y:0});
-    gsap.to(tickerInner,{
-      y: -Math.max(0, h - 160),
-      duration: Math.max(10, h/25),
-      ease: 'none',
-      repeat: -1,
-      yoyo: true
-    });
-  });
-</script>
+<!-- App logika külön fájlban -->
+<script type="module" src="app.js"></script>
 </body>
 </html>
