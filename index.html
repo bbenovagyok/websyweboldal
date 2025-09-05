@@ -64,30 +64,48 @@
     .ticker{mask:linear-gradient(90deg,transparent,black 10%,black 90%,transparent)}
     .ticker .marquee{display:flex;gap:2.5rem;width:max-content;animation:marquee 20s linear infinite reverse}
 
-    /* Reviews – star picker */
+    /* Értékelő csillagpicker */
     .rating{direction:rtl;display:flex;gap:.25rem}
     .rating input{display:none}
     .rating label{cursor:pointer;font-size:1.1rem;line-height:1;color:#475569;transition:color .15s}
     .rating label:hover,.rating label:hover ~ label{color:#fde047}
     .rating input:checked ~ label{color:#fde047}
 
-    /* Reviews – feed sorok (MOST TÖBBSOROS, nem vág le) */
+    /* -------- Vélemény ticker – RESPONSIVE GRID ---------- */
+    /* Alap: MOBIL – felül (név | csillagok), alul a szöveg teljes szélességen */
     #tickerInner > div{
       display:grid;
-      grid-template-columns:minmax(84px,120px) 72px 1fr;  /* név | csillag | szöveg */
-      align-items:start;           /* a többsoros szöveg tetejére igazít */
-      gap:.75rem
+      gap:.6rem .75rem;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "name  stars"
+        "text  text";
+      align-items:start;
     }
-    /* a szöveg oszlop tördelhet, nincs ellipszis */
-    #tickerInner > div .rev-text{
-      white-space:normal;
+    /* név / csillag / szöveg terület-hozzárendelés (JS nélkül, nth-child alapján is működik) */
+    #tickerInner > div span:nth-child(1){grid-area:name; min-width:84px;}
+    #tickerInner > div span:nth-child(2){grid-area:stars; text-align:right;}
+    #tickerInner > div .rev-text,
+    #tickerInner > div span:nth-child(3){
+      grid-area:text;
+      white-space:normal;       /* többsoros */
       overflow:visible;
       text-overflow:unset;
       word-break:break-word;
       line-height:1.45;
+      margin-top:.1rem;
     }
+
+    /* DESKTOP ≥480px: egy sorban (név | csillagok | szöveg) */
     @media (min-width:480px){
-      #tickerInner > div{grid-template-columns:140px 80px 1fr}
+      #tickerInner > div{
+        grid-template-columns:140px 80px 1fr;
+        grid-template-areas:"name stars text";
+        align-items:center;
+      }
+      #tickerInner > div span:nth-child(2){text-align:center;}
+      #tickerInner > div .rev-text,
+      #tickerInner > div span:nth-child(3){margin-top:0;}
     }
 
     /* Feature GIF „ikon” */
