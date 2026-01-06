@@ -104,6 +104,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Mark this device as Admin to exclude from tracking
+        localStorage.setItem('websy_admin', 'true');
+
         // Helper: get start of day
         function startOfDay(d) {
             const start = new Date(d);

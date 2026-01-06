@@ -995,8 +995,9 @@
     const db = getFirestore(app);
 
     async function trackVisit() {
-      // Don't track if it's localhost (optional, but good for clean data)
+      // Don't track if it's localhost or admin device
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+      if (localStorage.getItem('websy_admin') === 'true') return;
 
       let city = "Ismeretlen";
       let country = "Ismeretlen";
