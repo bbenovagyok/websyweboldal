@@ -75,7 +75,7 @@
         <!-- Recent Visits -->
         <div class="glass rounded-xl p-6">
             <h2 class="text-lg font-semibold mb-4">Legutóbbi látogatások</h2>
-            <div id="recentVisits" class="space-y-2 text-sm">
+            <div id="recentVisits" class="space-y-4 text-sm">
                 <div class="text-slate-400">Betöltés...</div>
             </div>
         </div>
@@ -104,11 +104,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Helper: get date string YYYY-MM-DD
-        function dateStr(d) {
-            return d.toISOString().split('T')[0];
-        }
-
         // Helper: get start of day
         function startOfDay(d) {
             const start = new Date(d);
@@ -120,7 +115,7 @@
             try {
                 const visitsRef = collection(db, "visits");
 
-                // Get all visits (for simplicity - in production you'd use aggregations)
+                // Get all visits
                 const allVisitsSnap = await getDocs(query(visitsRef, orderBy("ts", "desc"), limit(100)));
                 const visits = [];
                 allVisitsSnap.forEach(doc => {
@@ -186,11 +181,11 @@
                 } else {
                     recentContainer.innerHTML = visits.slice(0, 20).map(v => `
             <div class="flex justify-between items-center py-2 border-b border-white/5">
-              <div class="flex flex-col">
-                <span class="text-slate-300 font-medium">${v.page}</span>
-                <span class="text-slate-500 text-xs">${v.city}, ${v.country}</span>
-              </div>
-              <span class="text-slate-500 text-xs text-right">${v.ts.toLocaleString('hu-HU')}</span>
+                <div class="flex flex-col">
+                    <span class="text-slate-300 font-medium">${v.page}</span>
+                    <span class="text-slate-500 text-xs">${v.city}, ${v.country}</span>
+                </div>
+                <span class="text-slate-500 text-xs text-right">${v.ts.toLocaleString('hu-HU')}</span>
             </div>
           `).join('');
                 }
