@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="hu" class="scroll-smooth">
+
+<head>
+  <!-- =========================================================
+       Websy – teljes oldal (kért, hosszú verzió, 499+ sor)
+       Minden kérés beépítve:
+       - Hero szöveg: “Modern, Gyors és Animált weboldalak 2026 módra”
+         (a “2026” ugyanakkora, mint a többi szó)
+       - Hero háttér-animáció középre igazítva
+       - Bal CTA: Kérek ajánlatot (figyelemfelkeltő + shake)
+         Jobb CTA: Nézd meg a munkáimat (lila)
+       - “Mit kapsz tőlem” kártyák: nagyítás hover-re + árnyék
+       - “Friss munkák”: 3 valódi + 2 “kamu” kártya (fele méret, spinner)
+       - Vélemények címe középre
+       - Csomagok: figyelemfelkeltő cím, “LEGNÉPSZERŰBB” badge shake
+       - Kapcsolat cím: “Mond el milyen oldalt szeretnél”
+         alatta a szöveg üveges háttérdobozban
+       - Footer: © 2026
+       - Mobilon minden szöveg középre (media query)
+       ========================================================= -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Websy - weboldal építés</title>
+
+  <!-- SEO -->
+  <meta name="description"
+    content="Weboldal készítés 2026-ban: gyors, reszponzív, animált és SEO-optimalizált honlapok vállalkozóknak. Portfólió, élő vélemények (Firebase), konverziófókuszú UX." />
+  <meta property="og:title" content="Websy - weboldal építés" />
+  <meta property="og:description"
+    content="SEO-barát, gyors és animált weboldalak. Nézd meg a referencia munkákat és kérj ajánlatot." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#111827" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://i.postimg.cc/28Jm98b6/websylogo.png">
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { inter: ['Inter', 'ui-sans-serif', 'system-ui'] },
+          colors: {
+            brand: {
+              50: '#f4f1ff', 100: '#ebe5ff', 200: '#d7cdff', 300: '#b6a2ff',
+              400: '#9b7dff', 500: '#865fff', 600: '#6f43fb', 700: '#5a33d4',
+              800: '#492aa9', 900: '#3b2586'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Icons + GSAP -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ===========================================
+       Alap stílusok
+       =========================================== */
+    html,
+    body {
+      background: #0b0f1a;
+      color: #e5e7eb;
+      font-family: Inter, system-ui;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .09);
+      backdrop-filter: blur(12px)
+    }
+
+    .grad-text {
+      background: linear-gradient(90deg, #a855f7, #6366f1, #22d3ee);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent
+    }
+
+    .btn {
+      background: linear-gradient(90deg, #8b5cf6, #6366f1);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, .35);
+      transition: transform .18s, box-shadow .18s
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(99, 102, 241, .45)
+    }
+
+    .btn-sm {
+      padding: .55rem .9rem;
+      border-radius: .7rem;
+      font-weight: 600;
+      font-size: .95rem
+    }
+
+    .tilt {
+      transform: perspective(1000px) rotateX(0) rotateY(0);
+      transition: transform .2s
+    }
+
+    /* ===========================================
+       CTA – figyelemfelkeltő (hero)
+       =========================================== */
+    .btn-attn {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      box-shadow: 0 10px 25px rgba(239, 68, 68, .35);
+      transition: transform .18s, box-shadow .18s
+    }
+
+    .btn-attn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(239, 68, 68, .45)
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(0)
+      }
+
+      20% {
+        transform: translateX(-1.5px) rotate(-0.6deg)
+      }
+
+      40% {
+        transform: translateX(1.5px) rotate(0.6deg)
+      }
+
+      60% {
+        transform: translateX(-1px) rotate(-0.4deg)
+      }
+
+      80% {
+        transform: translateX(1px) rotate(0.4deg)
+      }
+    }
+
+    .shake {
+      animation: shake 1.6s ease-in-out infinite
+    }
+
+    .shake:hover {
+      animation-play-state: paused
+    }
+
+    /* ===========================================
+       HERO háttér – középre igazított kompozit fények
+       =========================================== */
+    .hero-wrap {
+      position: relative;
+      isolation: isolate
+    }
+
+    .hero-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      height: 120vh;
+      z-index: -2;
+      background:
+        radial-gradient(60vmax 60vmax at 50% 20%, rgba(99, 102, 241, .18), transparent 60%),
+        radial-gradient(50vmax 50vmax at 50% 50%, rgba(34, 211, 238, .14), transparent 60%),
+        radial-gradient(40vmax 40vmax at 50% 80%, rgba(168, 85, 247, .12), transparent 60%);
+      filter: blur(42px);
+    }
+
+    /* lágy, középre húzott "sweep" fények */
+    .hero-sweep {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden
+    }
+
+    .hero-sweep::before,
+    .hero-sweep::after {
+      content: "";
+      position: absolute;
+      top: -20%;
+      bottom: -20%;
+      width: 40%;
+      left: 30%;
+      background: radial-gradient(120% 80% at 50% 50%, rgba(255, 255, 255, .18), transparent 60%);
+      filter: blur(30px);
+      animation: sweep 18s linear infinite;
+    }
+
+    .hero-sweep::after {
+      animation-delay: -9s;
+      opacity: .6
+    }
+
+    @keyframes sweep {
+      0% {
+        transform: translateX(-20%) rotate(8deg)
+      }
+
+      100% {
+        transform: translateX(60%) rotate(8deg)
+      }
+    }
+
+    /* ===========================================
+       Tech ticker
+       =========================================== */
+    @keyframes marquee {
+      from {
+        transform: translateX(0)
+      }
+
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    .ticker {
+      mask: linear-gradient(90deg, transparent, black 10%, black 90%, transparent)
+    }
+
+    .ticker .marquee {
+      display: flex;
+      gap: 2.5rem;
+      width: max-content;
+      animation: marquee 20s linear infinite reverse
+    }
+
+    /* ===========================================
+       Értékelő csillagpicker
+       =========================================== */
+    .rating {
+      direction: rtl;
+      display: flex;
+      gap: .25rem
+    }
+
+    .rating input {
+      display: none
+    }
+
+    .rating label {
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      color: #475569;
+      transition: color .15s
+    }
+
+    .rating label:hover,
+    .rating label:hover~label {
+      color: #fde047
+    }
+
+    .rating input:checked~label {
+      color: #fde047
+    }
+
+    /* ===========================================
+       Vélemény ticker – RESPONSIVE GRID
+       =========================================== */
+    #tickerInner>div {
+      display: grid;
+      gap: .6rem .75rem;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "name  stars"
+        "text  text";
+      align-items: start;
+    }
+
+    #tickerInner>div span:nth-child(1) {
+      grid-area: name;
+      min-width: 84px;
+    }
+
+    #tickerInner>div span:nth-child(2) {
+      grid-area: stars;
+      text-align: right;
+    }
+
+    #tickerInner>div .rev-text,
+    #tickerInner>div span:nth-child(3) {
+      grid-area: text;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      word-break: break-word;
+      line-height: 1.45;
+      margin-top: .1rem;
+    }
+
+    @media (min-width:480px) {
+      #tickerInner>div {
+        grid-template-columns: 140px 80px 1fr;
+        grid-template-areas: "name stars text";
+        align-items: center;
+      }
+
+      #tickerInner>div span:nth-child(2) {
+        text-align: center;
+      }
+
+      #tickerInner>div .rev-text,
+      #tickerInner>div span:nth-child(3) {
+        margin-top: 0;
+      }
+    }
+
+    /* ===========================================
+       Feature GIF ikon
+       =========================================== */
+    .gif-icon {
+      height: 2.5rem;
+      width: 2.5rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .12)
+    }
+
+    .gif-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    /* ===========================================
+       Kártya hover nagyítás + kép zoom
+       =========================================== */
+    .card-zoom {
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+    .card-zoom:hover {
+      transform: scale(1.08);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, .45)
+    }
+
+    .card-zoom img {
+      transition: transform .5s ease;
+    }
+
+    .card-zoom:hover img {
+      transform: scale(1.06)
+    }
+
+    /* ===========================================
+       Placeholder (kamu) kártya + spinner + felezett vizuális súly
+       =========================================== */
+    .ph-media {
+      position: relative;
+      display: block;
+      height: 8rem;
+      background: rgba(255, 255, 255, .04);
+      border-bottom: 1px solid rgba(255, 255, 255, .07)
+    }
+
+    .spin {
+      width: 34px;
+      height: 34px;
+      border: 3px solid rgba(255, 255, 255, .25);
+      border-top-color: #9b7dff;
+      border-radius: 9999px;
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      animation: spin 1s linear infinite
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .ph-card {
+      transform: scale(.8);
+      opacity: .95
+    }
+
+    /* ===========================================
+       Hero kiemelések
+       =========================================== */
+    .hero-highlight {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900
+    }
+
+    .hero-white {
+      color: #fff;
+      font-weight: 800
+    }
+
+    .hero-2026 {
+      color: #6366f1;
+      font-weight: 900
+    }
+
+    /* ===========================================
+       Vélemények és Csomagok cím középre + Csomagok kiemelés
+       =========================================== */
+    #velemenyek h2 {
+      text-align: center;
+    }
+
+    #arak h2 {
+      text-align: center;
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent
+    }
+
+    /* ===========================================
+       “Legnépszerűbb” badge – feltűnő + shake
+       =========================================== */
+    .badge-pop {
+      display: inline-block;
+      background: #facc15;
+      color: #111;
+      padding: .35rem .8rem;
+      border-radius: .6rem;
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+      box-shadow: 0 10px 25px rgba(250, 204, 21, .25);
+      animation: shake 1.6s ease-in-out infinite
+    }
+
+    /* ===========================================
+       Kapcsolat – kiemelő doboz
+       =========================================== */
+    .contact-note {
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .12);
+      padding: 1rem;
+      border-radius: .9rem;
+      margin-top: 1rem
+    }
+
+    /* ===========================================
+       Mobil – minden szöveg középre
+       =========================================== */
+    @media(max-width:768px) {
+
+      h1,
+      h2,
+      h3,
+      p,
+      li,
+      figcaption,
+      blockquote,
+      small,
+      dt,
+      dd,
+      span {
+        text-align: center !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+  <!-- =========================================================
+       Header
+       ========================================================= -->
+  <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-6xl glass rounded-full"
+    aria-label="Fő navigáció">
+    <div class="px-5 py-3 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 font-bold" aria-label="Websy kezdőlap">
+        <img src="https://i.postimg.cc/28Jm98b6/websylogo.png" alt="Websy Logo"
+          class="w-10 h-10 object-contain rounded-full">
+        <span class="grad-text text-xl">Websy</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm" aria-label="Ugrás szekciókhoz">
+        <a href="#munkak" class="hover:text-brand-200">Munkák</a>
+        <a href="#szolg" class="hover:text-brand-200">Szolgáltatások</a>
+        <a href="#arak" class="hover:text-brand-200">Árak</a>
+        <a href="#velemenyek" class="hover:text-brand-200">Vélemények</a>
+        <a href="#kapcsolat" class="hover:text-brand-200">Kapcsolat</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <!-- CTA: Mobile "Ajánlat", Desktop "Kérek ajánlatot" -->
+        <a href="#kapcsolat" class="btn text-white text-sm font-semibold px-4 py-2 rounded-full">
+          <span class="md:hidden">Ajánlat</span>
+          <span class="hidden md:inline">Kérek ajánlatot</span>
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button id="menuBtn" class="md:hidden p-2 text-white" aria-label="Menü megnyitása">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobileMenu"
+    class="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl translate-x-full transition-transform duration-300 md:hidden flex flex-col items-center justify-center gap-8">
+    <button id="closeMenuBtn" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-white"
+      aria-label="Menü bezárása">
+      <i data-lucide="x" class="w-8 h-8"></i>
+    </button>
+
+    <nav class="flex flex-col items-center gap-8 text-xl font-medium">
+      <a href="#munkak" class="mobile-link hover:text-brand-400">Munkák</a>
+      <a href="#szolg" class="mobile-link hover:text-brand-400">Szolgáltatások</a>
+      <a href="#arak" class="mobile-link hover:text-brand-400">Árak</a>
+      <a href="#velemenyek" class="mobile-link hover:text-brand-400">Vélemények</a>
+      <a href="#kapcsolat" class="mobile-link hover:text-brand-400">Kapcsolat</a>
+    </nav>
+  </div>
+
+  <!-- =========================================================
+       Main
+       ========================================================= -->
+  <main>
+    <!-- =======================================================
+         Hero
+         ======================================================= -->
+    <section class="hero-wrap pt-40 md:pt-48 pb-20">
+      <div class="hero-sweep"></div>
+      <div class="container mx-auto px-6 text-center">
+        <h1 class="text-3xl md:text-6xl font-extrabold leading-tight">
+          Weboldal, ami <br class="md:hidden" /> <span class="hero-highlight">tényleg ügyfelet</span> hoz <br
+            class="md:hidden" /> <span class="hero-2026">NEKED</span>
+        </h1>
+
+        <p class="mt-6 text-slate-300 max-w-2xl mx-auto">
+          Nincs weboldalad 2026-ban? Ez hatalmas hiba!
+        </p>
+
+        <!-- CTA-k: balra figyelemfelkeltő, jobbra lila -->
+        <div class="mt-10 flex items-center justify-center gap-4 flex-col sm:flex-row">
+          <a href="#kapcsolat" class="btn-attn shake text-white font-semibold px-7 py-3 rounded-xl w-full sm:w-auto"
+            aria-label="Ajánlatkérés">
+            Kérek ajánlatot
+          </a>
+          <a href="#munkak" class="btn text-white font-semibold px-7 py-3 rounded-xl w-full sm:w-auto"
+            aria-label="Portfólió megtekintése">
+            Nézd meg a munkáimat
+          </a>
+        </div>
+
+        <!-- tech ticker -->
+        <div class="ticker mt-14 overflow-hidden" aria-hidden="true">
+          <div class="marquee">
+            <div class="flex gap-10 pr-10">
+              <span class="opacity-70">Tailwind</span>
+              <span class="opacity-70">GSAP</span>
+              <span class="opacity-70">Firebase</span>
+              <span class="opacity-70">Netlify</span>
+              <span class="opacity-70">Cloudflare</span>
+              <span class="opacity-70">SEO</span>
+            </div>
+            <div class="flex gap-10">
+              <span class="opacity-70">Tailwind</span>
+              <span class="opacity-70">GSAP</span>
+              <span class="opacity-70">Firebase</span>
+              <span class="opacity-70">Netlify</span>
+              <span class="opacity-70">Cloudflare</span>
+              <span class="opacity-70">SEO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         Mit kapsz tőlem? (GIF ikonokkal)
+         ======================================================= -->
+    <section id="szolg" class="py-20 bg-white/5">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center">Mit kapsz tőlem?</h2>
+
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mt-12">
+          <!-- 1 -->
+          <div class="glass rounded-xl p-5 tilt card-zoom">
+            <div class="gif-icon mb-3 mx-auto md:mx-0">
+              <img src="https://i.postimg.cc/nzDbDcC4/monitor.gif" alt="Professzionális kinézet" loading="lazy"
+                decoding="async">
+            </div>
+            <h3 class="font-semibold mb-2">✨ Professzionális kinézet</h3>
+            <p class="text-slate-300 text-sm">Modern dizájn, figyelemfelkeltő szövegek és elemek, amik eladják a
+              szolgáltatásod.</p>
+          </div>
+
+          <!-- 2 -->
+          <div class="glass rounded-xl p-5 tilt card-zoom">
+            <div class="gif-icon mb-3 mx-auto md:mx-0">
+              <img src="https://i.postimg.cc/8CsVTbGn/worldwide.gif" alt="Konverzió-optimalizált UX" loading="lazy"
+                decoding="async">
+            </div>
+            <h3 class="font-semibold mb-2">🎯 Ügyfélbarát felhasználói élmény</h3>
+            <p class="text-slate-300 text-sm">Könnyen használható weboldal, ami több látogatót és vásárlót hoz.</p>
+          </div>
+
+          <!-- 3 -->
+          <div class="glass rounded-xl p-5 tilt card-zoom">
+            <div class="gif-icon mb-3 mx-auto md:mx-0">
+              <img src="https://i.postimg.cc/GtmFf9GY/destination.gif" alt="Automatizált ügyfélszerzés" loading="lazy"
+                decoding="async">
+            </div>
+            <h3 class="font-semibold mb-2">🤖 Automatizált ügyfélszerzés</h3>
+            <p class="text-slate-300 text-sm">Automatizált rendszer, ami új ügyfeleket hoz neked extra munka nélkül.</p>
+          </div>
+
+          <!-- 4 -->
+          <div class="glass rounded-xl p-5 tilt card-zoom hidden md:block">
+            <div class="gif-icon mb-3 mx-auto md:mx-0">
+              <img src="https://i.postimg.cc/wTPXWqvy/responsive.gif" alt="Teljes reszponzivitás" loading="lazy"
+                decoding="async">
+            </div>
+            <h3 class="font-semibold mb-2">📱 Teljes reszponzivitás</h3>
+            <p class="text-slate-300 text-sm">Mobil-first elrendezés, touch-friendly UX. Tablet/desktop full oké.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         Portfolio
+         ======================================================= -->
+    <section id="munkak" class="py-20">
+      <div class="container mx-auto px-6">
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="text-3xl md:text-4xl font-bold">Friss munkák</h2>
+          <a href="#kapcsolat" class="text-brand-200 hover:underline">Szeretnék hasonlót</a>
+        </div>
+
+        <div class="mt-10 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <!-- Real 1 -->
+          <article class="glass rounded-2xl overflow-hidden group card-zoom">
+            <div class="relative overflow-hidden">
+              <img src="https://i.postimg.cc/zfV9nCzg/image.png" alt="Ácsmester landing – referencia"
+                class="w-full h-40 md:h-64 object-cover transition">
+              <div class="absolute top-4 left-4 text-xs px-3 py-1 rounded-full bg-black/60">Landing • Építőipar</div>
+            </div>
+            <div class="p-4 md:p-6">
+              <h3 class="font-semibold text-lg">Ácsmester — hero redesign</h3>
+              <p class="text-slate-300 text-sm mt-2">Masszív tipográfia, erős CTA, üveg-navi. Sötét overlay a
+                kontraszthoz.</p>
+            </div>
+          </article>
+
+          <!-- Real 2 -->
+          <article class="glass rounded-2xl overflow-hidden group card-zoom">
+            <div class="relative overflow-hidden">
+              <img src="https://i.postimg.cc/MGMFcz50/image.png" alt="PIVO Bar – referencia"
+                class="w-full h-40 md:h-64 object-cover transition">
+              <div class="absolute top-4 left-4 text-xs px-3 py-1 rounded-full bg-black/60">Web • Vendéglátás</div>
+            </div>
+            <div class="p-4 md:p-6">
+              <h3 class="font-semibold text-lg">PIVO Bar — foglalós hero</h3>
+              <p class="text-slate-300 text-sm mt-2">Nápolyi vibe, erős CTA gomb, halvány vignetta.</p>
+            </div>
+          </article>
+
+          <!-- Real 3 (linkelt) -->
+          <a href="https://eszestisztaklima.hu/" target="_blank" rel="noopener"
+            class="glass rounded-2xl overflow-hidden group block card-zoom"
+            aria-label="Eszes Tiszta Klíma referencia megnyitása új ablakban">
+            <div class="relative overflow-hidden">
+              <img src="https://i.postimg.cc/MZcWb9JZ/K-perny-k-p-2025-09-05-183107.png"
+                alt="Eszes Tiszta Klíma — weboldal referencia" class="w-full h-40 md:h-64 object-cover transition">
+              <div class="absolute top-4 left-4 text-xs px-3 py-1 rounded-full bg-black/60">Web • Klímaszerelés</div>
+            </div>
+            <div class="p-4 md:p-6">
+              <h3 class="font-semibold text-lg">Eszes Tiszta Klíma — landing</h3>
+              <p class="text-slate-300 text-sm mt-2">Erős hero, kontrasztos CTA, csúszó review sáv; városok szerinti
+                térkép.</p>
+            </div>
+          </a>
+
+          <!-- Placeholder 1 (felezett) -->
+          <article class="glass rounded-2xl overflow-hidden card-zoom ph-card" aria-label="Folyamatban lévő projekt">
+            <div class="ph-media">
+              <div class="spin" aria-hidden="true"></div>
+            </div>
+            <div class="p-4 md:p-6">
+              <h3 class="font-semibold text-lg">Folyamatban — vállalkozói oldal</h3>
+              <p class="text-slate-300 text-sm mt-2">Képek és case study feltöltés alatt…</p>
+            </div>
+          </article>
+
+          <!-- Placeholder 2 (felezett) -->
+          <article class="glass rounded-2xl overflow-hidden card-zoom ph-card" aria-label="Folyamatban lévő projekt">
+            <div class="ph-media">
+              <div class="spin" aria-hidden="true"></div>
+            </div>
+            <div class="p-6">
+              <h3 class="font-semibold text-lg">Folyamatban — foglalós landing</h3>
+              <p class="text-slate-300 text-sm mt-2">UX finomhangolás és tartalomfeltöltés folyamatban…</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =======================================================
+         Vélemények (Feed)
+         ======================================================= -->
+    <section id="velemenyek" class="py-20 bg-white/5">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Vélemények</h2>
+
+        <div class="max-w-4xl mx-auto">
+          <!-- Animált feed -->
+          <div class="glass rounded-2xl p-6 flex flex-col">
+            <h3 class="font-semibold mb-4">Friss visszajelzések</h3>
+            <div id="tickerWrap" class="overflow-hidden grow relative min-h-[12rem]">
+              <div id="tickerInner" class="absolute inset-0 flex flex-col gap-4 pr-4"></div>
+            </div>
+          </div>
+          <!-- (normál lista – most rejtve) -->
+          <div id="reviewsList" class="hidden"></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =======================================================
+         Árak / Csomagok
+         ======================================================= -->
+    <section id="arak" class="py-10">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center">Csomagok</h2>
+
+        <div class="mt-10 grid md:grid-cols-2 gap-6">
+          <!-- Starter -->
+          <div class="glass p-7 rounded-2xl flex flex-col h-full card-zoom">
+            <h3 class="text-xl font-semibold">Starter Landing</h3>
+            <p class="text-slate-300 text-sm mt-2">1 oldal, hero + szekciók, CTA, analitika</p>
+            <div class="text-3xl font-extrabold mt-6 text-center">99.990 Ft</div>
+            <ul class="mt-6 space-y-2 text-sm">
+              <li>• Reszponzív design</li>
+              <li>• Alap SEO</li>
+              <li>• 1 kör módosítás</li>
+            </ul>
+            <a href="#kapcsolat"
+              class="btn text-white rounded-xl mt-6 self-center px-8 py-3 text-lg font-semibold">Mehet</a>
+          </div>
+
+          <!-- Business -->
+          <div class="glass p-7 rounded-2xl border border-brand-400/40 flex flex-col h-full card-zoom">
+            <div class="badge-pop self-center mb-2">LEGNÉPSZERŰBB</div>
+            <h3 class="text-xl font-semibold text-brand-400">Business Site</h3>
+            <p class="text-slate-300 text-sm mt-2">3–5 oldal, blog, űrlap, gyors hosting</p>
+            <div class="text-3xl font-extrabold mt-6 text-center text-brand-400">— egyedi ajánlat</div>
+            <ul class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+              <li>• Animációk + micro-UX</li>
+              <li>• SEO technikai checklist</li>
+              <li>• 2 kör módosítás</li>
+              <li>• Egyedi kérések</li>
+              <li>• Egyedi animáció</li>
+              <li>• Interaktív térkép</li>
+              <li>• Időpontfoglalás</li>
+            </ul>
+            <a href="#kapcsolat"
+              class="btn text-white rounded-xl mt-6 self-center px-8 py-3 text-lg font-semibold">Kérek ajánlatot</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kapcsolat" class="py-20 relative overflow-hidden">
+      <!-- Background Glow Effect -->
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-400/10 rounded-full blur-[100px] pointer-events-none">
+      </div>
+
+      <div class="container mx-auto px-6 text-center relative z-10">
+        <div
+          class="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-wider text-brand-400 uppercase glass rounded-full ring-1 ring-brand-400/30">
+          Projekt indítása
+        </div>
+        <h2 class="text-3xl md:text-5xl font-extrabold mb-4">
+          Mondd, milyen <span class="hero-highlight">oldalt szeretnél</span>
+        </h2>
+
+        <p class="text-slate-300 max-w-xl mx-auto mb-8">
+          Írd le röviden az elképzelésed. 24 órán belül válaszolok egy átlátható ütemtervvel és árajánlattal.
+        </p>
+
+        <div class="max-w-2xl mx-auto glass p-6 md:p-8 rounded-2xl border border-brand-400/20">
+          <form action="https://formspree.io/f/mdklpvev" method="POST" accept-charset="UTF-8"
+            class="grid md:grid-cols-2 gap-4" aria-label="Kapcsolatfelvételi űrlap">
+            <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="_subject" value="Új kapcsolatfelvétel - Websy">
+
+            <input name="name" required placeholder="Neved"
+              class="glass rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-brand-400/50" aria-label="Név">
+            <input name="email" required type="email" placeholder="Email címed"
+              class="glass rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-brand-400/50" aria-label="Email">
+            <textarea name="message" required placeholder="Milyen weboldalt szeretnél? (pár mondat)"
+              class="md:col-span-2 glass rounded-lg px-4 py-3 h-28 focus:ring-2 focus:ring-brand-400/50 resize-none"
+              aria-label="Üzenet"></textarea>
+            <button class="btn text-white rounded-xl px-8 py-4 md:col-span-2 text-lg font-semibold">
+              Ingyenes ajánlatkérés
+            </button>
+          </form>
+        </div>
+
+        <div class="mt-8">
+          <span class="text-slate-400 text-sm">Vagy írj közvetlenül: </span>
+          <a href="mailto:berceli45@gmail.com" class="text-brand-400 hover:underline text-sm">
+            berceli45@gmail.com
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         Vélemény írása
+         ======================================================= -->
+    <section id="velemeny-iras" class="py-20">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Vélemény írása</h2>
+
+        <div class="max-w-3xl mx-auto">
+          <!-- Űrlap -->
+          <form id="reviewForm" class="glass p-6 rounded-2xl" aria-label="Vélemény beküldése">
+            <div class="grid md:grid-cols-3 gap-4 items-center">
+              <input required name="name" placeholder="Neved"
+                class="glass rounded-lg px-4 py-3 outline-none md:col-span-1" />
+              <div class="glass rounded-lg px-4 py-3 md:col-span-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm opacity-70">Értékelés</span>
+                  <div class="rating" aria-label="Csillagos értékelés">
+                    <input type="radio" id="star5" name="rating" value="5" checked><label for="star5">★</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-sm text-white rounded-lg md:col-span-1 justify-self-start">Vélemény
+                beküldése</button>
+              <textarea required name="text" placeholder="Mondd el röviden, milyen volt velem dolgozni…"
+                class="glass rounded-lg px-4 py-3 h-28 md:col-span-3 mt-2"></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       Footer
+       ========================================================= -->
+  <footer class="py-10 text-center text-slate-400">
+    <p>© 2026 Berceli Bence — Weboldal építés.</p>
+  </footer>
+
+  <!-- =========================================================
+       Alap JS – animációk
+       ========================================================= -->
+  <script>
+    lucide.createIcons(); // ikonok
+
+    // GSAP belépő animok a szekciókra
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('section').forEach((sec) => {
+      gsap.from(sec.querySelectorAll('h2, h3, p, .glass, article, form'), {
+        opacity: 0, y: 20, stagger: 0.06, duration: .7, ease: 'power2.out',
+        scrollTrigger: { trigger: sec, start: 'top 80%' }
+      });
+    });
+
+    // Mobile Menu Logic
+    const menuBtn = document.getElementById('menuBtn');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    function toggleMenu() {
+      if (mobileMenu) {
+        mobileMenu.classList.toggle('translate-x-full');
+        document.body.classList.toggle('overflow-hidden'); // Prevent scrolling when menu is open
+      }
+    }
+
+    if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+    if (closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMenu);
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', toggleMenu);
+    });
+  </script>
+
+  <!-- =========================================================
+       Structured Data (SEO)
+       ========================================================= -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"ProfessionalService",
+    "name":"Websy",
+    "description":"Weboldal készítés 2026-ban: gyors, reszponzív, animált és SEO-optimalizált honlapok vállalkozóknak.",
+    "areaServed":"HU",
+    "email":"mailto:berceli45@gmail.com",
+    "telephone":"+36309574274",
+    "founder":"Berceli Bence",
+    "priceRange":"Ft"
+  }
+  </script>
+
+  <!-- =========================================================
+       Firebase review app
+       ========================================================= -->
+  <script type="module" src="app.js"></script>
+
+  <!-- =========================================================
+       Cloudflare Web Analytics
+       ========================================================= -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon='{"token": "6285088ce5614526ba1410818f2f541f"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+
+</body>
+
+</html>
