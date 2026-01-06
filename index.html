@@ -976,6 +976,57 @@
   <script type="module" src="app.js"></script>
 
   <!-- =========================================================
+       Visitor Tracking (Firebase + Geolocation)
+       ========================================================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDhV4g-7V2SW-ygR41jkERJgzsHtv9_S4Q",
+      authDomain: "websy-velemenyek.firebaseapp.com",
+      projectId: "websy-velemenyek",
+      storageBucket: "websy-velemenyek.appspot.com",
+      messagingSenderId: "47514318127",
+      appId: "1:47514318127:web:403255ebaa6eb72478ddda"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function trackVisit() {
+      // Don't track if it's localhost (optional, but good for clean data)
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+
+      let city = "Ismeretlen";
+      let country = "Ismeretlen";
+
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        city = data.city || "Ismeretlen";
+        country = data.country_name || "Ismeretlen";
+      } catch (e) {
+        console.warn("Geolocation feach failed", e);
+      }
+
+      try {
+        await addDoc(collection(db, "visits"), {
+          ts: serverTimestamp(),
+          page: window.location.pathname,
+          city: city,
+          country: country,
+          agent: navigator.userAgent
+        });
+      } catch (e) {
+        console.error("Visit tracking failed", e);
+      }
+    }
+
+    trackVisit();
+  </script>
+
+  <!-- =========================================================
        Cloudflare Web Analytics
        ========================================================= -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
