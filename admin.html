@@ -88,6 +88,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
         import {
             getFirestore, collection, query, orderBy, limit, getDocs, where, Timestamp
         } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -102,6 +103,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
         // Mark this device as Admin to exclude from tracking
@@ -116,6 +118,9 @@
 
         async function loadStats() {
             try {
+                // Sign in anonymously first
+                await signInAnonymously(auth);
+
                 const visitsRef = collection(db, "visits");
 
                 // Get all visits
