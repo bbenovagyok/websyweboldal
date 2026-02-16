@@ -457,9 +457,6 @@
 
 <body class="overflow-x-hidden">
 
-  <!-- =========================================================
-       Header
-       ========================================================= -->
   <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-6xl glass rounded-full"
     aria-label="Fő navigáció">
     <div class="px-5 py-3 flex items-center justify-between">
@@ -510,13 +507,7 @@
     </nav>
   </div>
 
-  <!-- =========================================================
-       Main
-       ========================================================= -->
   <main>
-    <!-- =======================================================
-         Hero
-         ======================================================= -->
     <section class="hero-wrap pt-40 md:pt-48 pb-20">
       <div class="hero-sweep"></div>
       <div class="container mx-auto px-6 text-center">
@@ -565,9 +556,6 @@
       </div>
     </section>
 
-    <!-- =======================================================
-         Mit kapsz tőlem? (GIF ikonokkal)
-         ======================================================= -->
     <section id="szolg" class="py-20 bg-white/5">
       <div class="container mx-auto px-6">
         <h2 class="text-3xl md:text-4xl font-bold text-center">Mit kapsz tőlem?</h2>
@@ -617,9 +605,6 @@
       </div>
     </section>
 
-    <!-- =======================================================
-         Portfolio
-         ======================================================= -->
     <section id="munkak" class="py-20">
       <div class="container mx-auto px-6">
         <div class="flex items-end justify-between gap-4">
@@ -655,7 +640,8 @@
             </div>
             <div class="p-4 md:p-6">
               <h3 class="font-semibold text-lg">Alföldkupa — versenykezelő</h3>
-              <p class="text-slate-300 text-sm mt-2">Modern versenykezelő rendszer valós idejű eredményekkel és közvetítéssel.</p>
+              <p class="text-slate-300 text-sm mt-2">Modern versenykezelő rendszer valós idejű eredményekkel és
+                közvetítéssel.</p>
             </div>
           </a>
 
@@ -742,9 +728,6 @@
     </section>
 
 
-    <!-- =======================================================
-         Vélemények (Feed)
-         ======================================================= -->
     <section id="velemenyek" class="py-20 bg-white/5">
       <div class="container mx-auto px-6">
         <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Vélemények</h2>
@@ -764,9 +747,6 @@
     </section>
 
 
-    <!-- =======================================================
-         Árak / Csomagok
-         ======================================================= -->
     <section id="arak" class="py-10">
       <div class="container mx-auto px-6">
         <h2 class="text-3xl md:text-4xl font-bold text-center">Csomagok</h2>
@@ -861,9 +841,6 @@
       </div>
     </section>
 
-    <!-- =======================================================
-         Vélemény írása
-         ======================================================= -->
     <section id="velemeny-iras" class="py-20">
       <div class="container mx-auto px-6">
         <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Vélemény írása</h2>
@@ -897,16 +874,10 @@
     </section>
   </main>
 
-  <!-- =========================================================
-       Footer
-       ========================================================= -->
   <footer class="py-10 text-center text-slate-400">
     <p>© 2026 Berceli Bence — Weboldal építés.</p>
   </footer>
 
-  <!-- =========================================================
-       Alap JS – animációk
-       ========================================================= -->
   <script>
     lucide.createIcons(); // ikonok
 
@@ -981,9 +952,6 @@
     }
   </script>
 
-  <!-- =========================================================
-       Structured Data (SEO)
-       ========================================================= -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -998,14 +966,8 @@
   }
   </script>
 
-  <!-- =========================================================
-       Firebase review app
-       ========================================================= -->
   <script type="module" src="app.js"></script>
 
-  <!-- =========================================================
-       Visitor Tracking (Firebase + Geolocation)
-       ========================================================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -1055,12 +1017,8 @@
     trackVisit();
   </script>
 
-  <!-- =========================================================
-       Cloudflare Web Analytics
-       ========================================================= -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
     data-cf-beacon='{"token": "6285088ce5614526ba1410818f2f541f"}'></script>
-  <!-- End Cloudflare Web Analytics -->
 
 </body>
 
